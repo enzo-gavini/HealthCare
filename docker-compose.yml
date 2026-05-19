@@ -9,21 +9,20 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_HEALTHCARE_ROOT_PASSWORD}
       MYSQL_USER: ${DB_HEALTHCARE_USER}
       MYSQL_PASSWORD: ${DB_HEALTHCARE_PASSWORD}
+    ports:
+      - "3309:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD"]
       interval: 10s
       timeout: 5s
       retries: 10
-      start_period: 30s
-    ports:
-      - "3309:3306"
+      start_period: 20s
     networks:
       - healthcare-network
 
   consul:
     image: hashicorp/consul:1.21.3
     container_name: consul
-    mem_limit: 700m
     ports:
       - "8500:8500"
     command: consul agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0 -data-dir=/consul/data
@@ -33,8 +32,32 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    networks:
+      - healthcare-network
+
+  ms-patient:
+    image: enzogavini/patient:latest
+    container_name: ms-patient
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_APPLICATION_NAME: patient
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${DB_HEALTHCARE}?allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${DB_HEALTHCARE_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_HEALTHCARE_PASSWORD}
+
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      mysql:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+    networks:
+      - healthcare-network
 
 networks:
   healthcare-network:
     driver: bridge
-
