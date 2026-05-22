@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: webapp
+
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        enabled: true
+        register: true
+
+server:
+  port: 8090
