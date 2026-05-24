@@ -17,7 +17,7 @@ public class PatientService {
         return patientRepository.save(patient);
     }
 
-    public List<Patient> findALL() {
+    public List<Patient> findAll() {
         return patientRepository.findAll();
     }
 
@@ -34,7 +34,4 @@ public class PatientService {
         return patientRepository.findById(id).orElse(null);
     }
 
-    public Patient findByEmail(String email) {
-        return patientRepository.findByEmail(email).orElse(null);
-    }
 }

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+</head>
+<body>
+<div>
+    <form th:action="@{/signin}" method="post" class="form-signin">
+        <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
+        <input type="password" name="password" placeholder="PassWord" class="form">
+    <button type="submit">CLIQUE
+    </button>
+    </form>
+</div>
+
+</body>
+</html>

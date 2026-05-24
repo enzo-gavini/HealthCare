@@ -35,7 +35,7 @@ public class PatientController {
     }
 
     @GetMapping("/get")
-    public List<Patient> getAllPatient() {
-        return patientService.findALL();
+    public List<Patient> getAllPatients() {
+        return patientService.findAll();
     }
 }
