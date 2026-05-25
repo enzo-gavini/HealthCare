@@ -2,9 +2,21 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>patientForm</title>
 </head>
 <body>
-
+<div>
+    <form th:action="${patientDto.id == null} ? @{/patients/add} : @{/patients/update/{id} (id=${patientDto.id})}"
+          th:object="${patientDto}" method="post" class="patientform">
+        <input th:field="*{firstName}" type="text" placeholder="First Name">
+        <input th:field="*{lastName}" type="text" placeholder="Last Name">
+        <input th:field="*{birthday}" type="date" placeholder="BirthDay">
+        <input th:field="*{gender}" type="text" placeholder="Gender">
+        <input th:field="*{phone}" type="text" placeholder="Phone">
+        <input th:field="*{email}" type="email" placeholder="email">
+        <button type="submit">Send</button>
+    </form>
+</div>
 </body>
 </html>

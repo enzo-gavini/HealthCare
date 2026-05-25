@@ -2,6 +2,11 @@ spring:
   application:
     name: ui-service
 
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
   cloud:
     consul:
       host: localhost
