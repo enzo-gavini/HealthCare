@@ -58,6 +58,23 @@ services:
     networks:
       - healthcare-network
 
+  ms-ui-service:
+    image: enzogavini/ui-service:latest
+    container_name: ms-ui-service
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_APPLICATION_NAME: ui-service
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+    depends_on:
+      consul:
+        condition: service_healthy
+      ms-patient:
+        condition: service_started
+    networks:
+      - healthcare-network
+
 networks:
   healthcare-network:
     driver: bridge
